@@ -1,0 +1,18 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Output of the go coverage tool
+*.out
+
+# VS Code specific settings
+.vscode/
+
+# Test binary, built with `go test -c`
+*.test
+
+# Project-specific binaries (if you name them anything specific)
+main
