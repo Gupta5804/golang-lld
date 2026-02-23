@@ -24,7 +24,7 @@ func (eb *EventBus) Subscribe(eventType string) Subscriber{
 	return ch
 }
 
-func (eb *EventBus) Publish(eventType string,msg string) {
+func (eb *EventBus) Publish(eventType,msg string) {
 	eb.mu.RLock()
 	defer eb.mu.RUnlock()
 
