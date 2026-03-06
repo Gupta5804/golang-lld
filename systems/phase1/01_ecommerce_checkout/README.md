@@ -38,7 +38,7 @@ Design an in-memory pricing engine for a new checkout flow. The system needs to 
 ## 3. API & Model Design
 
 * **Entities (`domain` package):** `Cart` encapsulates `Item`s and provides a `BaseTotal()` method via a pointer receiver to prevent memory copying.
-* **Engine (`pricing` package):** Uses the Strategy Pattern. `PricingRule` is an interface requiring an `Apply` method. 
+* **Engine (`pricing` package):** Uses the Strategy Pattern. `PricingRule` is an interface requiring an `Apply` method.
 * **Thread Safety:** The `PricingEngine.rules` slice is unexported. It is injected via `NewEngine()` and cannot be mutated by external concurrent HTTP handlers.
 
 ## 4. Red Phase (TDD)
