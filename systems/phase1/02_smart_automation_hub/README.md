@@ -41,3 +41,20 @@ Design the core domain model for a smart home hub that manages a heterogeneous c
 * **Lock Ordering & Anti-Patterns:** Explored the "Senior Go" paradigm of copying a slice of subscribers and releasing the Hub's `RLock` *before* iterating over interface methods. While our strict DAG made holding the lock safe here, dropping locks before executing interface callbacks is a critical defensive pattern to prevent deadlocks in complex cyclical systems.
 * **Go Type Conversions:** Learned that `string(integer)` converts an int to its Unicode character representation, not its numeric string equivalent (e.g., use `fmt.Sprintf` or `strconv.Itoa` instead).
   
+## 6. The Asynchronous Extension (`hub_async`)
+
+**Goal:** Evolve the synchronous mediator into a non-blocking Event Message Broker capable of handling massive ingestion spikes without blocking the publishers (sensors).
+
+### Key Architectural Decisions
+
+* **The Kafka Partitioning Model:** To solve the concurrency race condition where an `OFF` event might be processed before an `ON` event, we implemented deterministic routing.
+  * Instead of a single global queue, the Hub initializes a bounded slice of `WorkerChannels`.
+  * We use an `fnv` non-cryptographic hash of the `SensorID` modulo the `WorkerCount` (`hash(sensorID) % workerCount`).
+  * *Result:* Global parallel throughput with strict local FIFO sequential guarantees per sensor.
+* **Graceful Shutdown Barrier:** Implemented a `Stop()` method that closes all worker channels and blocks via `sync.WaitGroup`. This guarantees that during a server scale-down or crash, all in-flight events currently buffered in the channels are fully drained and processed before the `main` thread exits.
+* **Defensive Lock Management:** Inside the asynchronous workers, the `sync.RWMutex` is dropped *before* iterating over the `HubNode` interface callbacks. This prevents deadlocks if a physical device's `TurnOn()` method inadvertently triggers a downstream event back into the Hub.
+
+### Advanced TDD Constraints
+
+* Upgraded the Table-Driven tests to act as synchronization barriers. Assertions are strictly executed only after `hub.Stop()` returns to prevent flaky tests.
+* Engineered a dedicated `TestDispatcherHub_GracefulShutdown` test to simulate a 100-event traffic spike (hot-partitioning a single worker channel) followed immediately by a shutdown sequence to mathematically prove zero event loss.
