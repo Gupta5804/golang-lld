@@ -1,6 +1,6 @@
 # LLD Study Notes: Stock Price Alerting System
 
-**Goal:** Design an in-memory, highly concurrent stock alerting system where users can subscribe to specific stock tickers and receive asynchronous notifications when the price crosses a customized threshold.
+**Goal(Initial Prompt):** Design an in-memory stock alerting system where users can subscribe to specific ticker symbols and receive notifications when the price crosses a customized threshold. The notification dispatching should be modeled to run asynchronously so that a slow delivery channel, like an external SMS API, doesn't block the core price update engine. Additionally, we need a flexible way to encapsulate and execute the diverse types of user-defined alert triggers without tightly coupling them to the central price feed.
 
 ---
 
