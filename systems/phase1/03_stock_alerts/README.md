@@ -64,9 +64,7 @@ We avoided a "Big Ball of Mud" by isolating the system into three distinct packa
 
 * **Dependency Injection:** The `feed` and `notifier` packages have absolutely no knowledge of each other. They do not import each other. In `main.go`, we create the shared Go channel (`make(chan domain.Command)`) and strictly inject it into both constructors (`NewEngine` and `NewDispatcherHub`). This allows us to easily swap out the in-memory channel for a real message broker (like Kafka or RabbitMQ) in the future without changing a single line of core business logic.
 
-
 ---
-
 
 ## 3. Data Structure Decisions (Staff-Level Choices)
 
