@@ -1,7 +1,8 @@
-
 # LLD Study Notes: Game Avatar Loadout System
 
-**Goal (Initial Prompt):** Design an RPG avatar configuration and runtime loadout system. The monetization team requires a clean, readable API to spawn "Starter Bundles" with heavily customized base stats and VIP flags without creating bloated constructors. During a match, players can equip stacking power-ups (buffs/debuffs) that modify their base stats on the fly. The system must rapidly calculate the final theoretical max stats based on the active loadout combination.
+**Goal (Initial Prompt):** We are launching a new RPG feature in our app. Players get a basic avatar, but during a match, they can pick up all sorts of power-ups like 'speed boosts', 'fire auras', or 'heavy armor'. They can stack these buffs however they want, and the system needs to calculate their total stats on the fly. Also, the monetization team wants to sell pre-configured 'starter bundles', so we need a really clean, readable way in the backend to spawn these new avatars with different combinations of starting health, base damage, and special VIP flags without making a mess of the creation logic.
+
+(*Design an RPG avatar configuration and runtime loadout system. The monetization team requires a clean, readable API to spawn "Starter Bundles" with heavily customized base stats and VIP flags without creating bloated constructors. During a match, players can equip stacking power-ups (buffs/debuffs) that modify their base stats on the fly. The system must rapidly calculate the final theoretical max stats based on the active loadout combination.*)
 
 **Phase:** 1 (Foundation)  
 **Core Patterns:** Functional Options (Creational), Decorator (Structural)
